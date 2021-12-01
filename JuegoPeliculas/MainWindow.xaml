@@ -1,0 +1,140 @@
+﻿<Window x:Class="JuegoPeliculas.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JuegoPeliculas"
+        mc:Ignorable="d"
+        Title="Juego Películas" Height="450" Width="800" MinWidth="600" MinHeight="450">
+    <Window.Resources>
+        <!-- Estilo para aplicar fuente -->
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="Comic Sans MS"></Setter>
+        </Style>
+        <!-- Estilo para los botones de control de la partida -->
+        <Style TargetType="{x:Type Button}" x:Key="EstiloBotonesControlPartida">
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Width" Value="100"></Setter>
+        </Style>
+        <!-- Estilo para los botones de control de las películas-->
+        <Style TargetType="{x:Type Button}" x:Key="EstiloBotonesControlPelicula">
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Width" Value="100"></Setter>
+        </Style>
+        <!-- Estilo para los campos de texto donde se escriben el nombre, pista e imagen de la película -->
+        <Style TargetType="{x:Type TextBox}" x:Key="EstiloCamposTexto">
+            <Setter Property="Height" Value="18" />
+        </Style>
+    </Window.Resources>
+
+
+
+    <Grid>
+        <TabControl>
+            <!-- Pestaña para jugar -->
+            <TabItem Header="Jugar">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!-- Imagen de la película (último hijo)-->
+                    <Image Source="assets/placeholder.jpg" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Margin="10"></Image>
+
+                    <!-- Contenedor con la puntuación y los botones de nueva partida y rendirse -->
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0">Nueva Partida</Button>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2">Finalizar Partida</Button>
+                        <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
+                            <TextBlock DockPanel.Dock="Top">Puntuación</TextBlock>
+                            <Image Source="assets/placeholder.jpg" Name="PuntuacionImagen"></Image>
+                        </DockPanel>
+
+                    </Grid>
+
+                    <!-- Contenedor con el validador de películas -->
+                    <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="True" Width="250" HorizontalAlignment="Left">
+                        <TextBlock DockPanel.Dock="Top" Margin="0,20,0,0">Título de la película</TextBlock>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" DockPanel.Dock="Right">Validar</Button>
+                        <TextBox Width="200" Height="30" DockPanel.Dock="Left" />
+                    </DockPanel>
+
+                    <!-- Contenedor con la pista y el género -->
+                    <DockPanel Grid.Column="1" Grid.Row="2">
+                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top"/>
+                        <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top">Aquí va la pista</TextBlock>
+                        <Image Source="assets/placeholder.jpg" Name="GeneroImagen"></Image>
+                    </DockPanel>
+                </Grid>
+
+            </TabItem>
+            <!-- Pestaña para gestionar las películas -->
+            <TabItem Header="Gestionar">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="2" Background="red">
+
+                    </ScrollViewer>
+
+                    <!-- Campos de texto para escribir título, pista, imagen de la película -->
+                    <TextBlock Grid.Column="0" Grid.Row="7"> Título de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="7" Style="{StaticResource EstiloCamposTexto}"></TextBox>
+
+                    <TextBlock Grid.Column="0" Grid.Row="8"> Pista de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="8" Style="{StaticResource EstiloCamposTexto}"></TextBox>
+
+                    <TextBlock Grid.Column="0" Grid.Row="9"> Imagen de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="9" Style="{StaticResource EstiloCamposTexto}"></TextBox>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="3">
+                        <TextBlock>Nivel de dificultad: </TextBlock>
+                        <ComboBox></ComboBox>
+                        <TextBlock Margin="40,0,0,0">Género</TextBlock>
+                        <ComboBox></ComboBox>
+                    </StackPanel>
+                    <!-- Botones de control de las películas -->
+                    <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}"> Cargar en JSON</Button>
+                    <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Guardar en JSON</Button>
+                    <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Añadir Película</Button>
+                    <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Editar Película</Button>
+                    <Button Grid.Row="5" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Eliminar Película</Button>
+                    <Button Grid.Row="8" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Examinar</Button>
+                    
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
