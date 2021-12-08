@@ -44,7 +44,8 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <!-- Imagen de la película (último hijo)-->
-                    <Image Source="assets/placeholder.jpg" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Margin="10"></Image>
+
+                    <Image Source="{Binding Path=PeliculaActual.Cartel}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Margin="10"></Image>
 
                     <!-- Contenedor con la puntuación y los botones de nueva partida y rendirse -->
                     <Grid Grid.Column="1">
@@ -61,22 +62,24 @@
                         <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2">Finalizar Partida</Button>
                         <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
                             <TextBlock DockPanel.Dock="Top">Puntuación</TextBlock>
-                            <Image Source="assets/placeholder.jpg" Name="PuntuacionImagen"></Image>
+                            <Viewbox>
+                                <TextBlock>0</TextBlock>
+                            </Viewbox>
                         </DockPanel>
 
                     </Grid>
 
                     <!-- Contenedor con el validador de películas -->
-                    <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="True" Width="250" HorizontalAlignment="Left">
-                        <TextBlock DockPanel.Dock="Top" Margin="0,20,0,0">Título de la película</TextBlock>
+                    <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="False" Width="250" HorizontalAlignment="Left">
+                        <TextBlock DockPanel.Dock="Top" Margin="0,15,0,-40">Introduce el título de la película:</TextBlock>
                         <Button Style="{StaticResource EstiloBotonesControlPartida}" DockPanel.Dock="Right">Validar</Button>
-                        <TextBox Width="200" Height="30" DockPanel.Dock="Left" />
+                        <TextBox Width="150" Height="30" DockPanel.Dock="Left" />
                     </DockPanel>
 
                     <!-- Contenedor con la pista y el género -->
                     <DockPanel Grid.Column="1" Grid.Row="2">
-                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top"/>
-                        <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top">Aquí va la pista</TextBlock>
+                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top" Click="VerPistaCheckbox_Click"/>
+                        <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top" Text="{Binding Path=PeliculaActual.Pista}" Visibility="Hidden" /> 
                         <Image Source="assets/placeholder.jpg" Name="GeneroImagen"></Image>
                     </DockPanel>
                 </Grid>
@@ -86,7 +89,8 @@
             <TabItem Header="Gestionar">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="13.4"></ColumnDefinition>
+                        <ColumnDefinition Width="117"/>
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
@@ -104,34 +108,51 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="2" Background="red">
-
-                    </ScrollViewer>
+                    <!-- Contenedor de imágenes de películas -->
+                    <ListBox ItemsSource="{Binding Path=ListaPeliculas}" 
+                             SelectedItem="{Binding Path=PeliculaActual}"
+                             Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="4" Margin="0,0,219,0">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel></WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Image Source="{Binding Path=Cartel}" Width="100" Height="200"></Image>
+                                    <Viewbox>
+                                        <TextBlock Text="{Binding Path=Titulo}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
                     <!-- Campos de texto para escribir título, pista, imagen de la película -->
-                    <TextBlock Grid.Column="0" Grid.Row="7"> Título de la película</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="7" Style="{StaticResource EstiloCamposTexto}"></TextBox>
+                    <TextBlock Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" Margin="0,0,437.8,32.6" Grid.RowSpan="2"> Título de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="7" Style="{StaticResource EstiloCamposTexto}" Text="{Binding Path=PeliculaActual.Titulo}" Grid.ColumnSpan="3" Margin="116.6,7,219,7.8"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="8"> Pista de la película</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="8" Style="{StaticResource EstiloCamposTexto}"></TextBox>
+                    <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="3" Margin="0,0.2,437.8,32.4" Grid.RowSpan="2"> Pista de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="8" Style="{StaticResource EstiloCamposTexto}" Text="{Binding Path=PeliculaActual.Pista}" Grid.ColumnSpan="3" Margin="116.6,7.2,219,7.6"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="9"> Imagen de la película</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="9" Style="{StaticResource EstiloCamposTexto}"></TextBox>
+                    <TextBlock Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="3" Margin="0,0.4,437.8,32.2" Grid.RowSpan="2"> Imagen de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="9" Style="{StaticResource EstiloCamposTexto}" Text="{Binding Path=PeliculaActual.Cartel}" Grid.ColumnSpan="3" Margin="116.6,7.4,219,7.4"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="3">
-                        <TextBlock>Nivel de dificultad: </TextBlock>
-                        <ComboBox></ComboBox>
-                        <TextBlock Margin="40,0,0,0">Género</TextBlock>
-                        <ComboBox></ComboBox>
+                    <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="4" Margin="0,32.4,0,0.2" Grid.RowSpan="2">
+                        <TextBlock>Nivel de dificultad:</TextBlock>
+                        <ComboBox ItemsSource="{Binding Path=NivelesDificultad}" SelectedItem="{Binding Path=PeliculaActual.Nivel, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="40,0,0,0">Género:</TextBlock>
+                        <ComboBox ItemsSource="{Binding Path=Generos}" SelectedItem="{Binding Path=PeliculaActual.Genero, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <!-- Botones de control de las películas -->
-                    <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}"> Cargar en JSON</Button>
-                    <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Guardar en JSON</Button>
-                    <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Añadir Película</Button>
-                    <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Editar Película</Button>
-                    <Button Grid.Row="5" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Eliminar Película</Button>
-                    <Button Grid.Row="8" Grid.Column="2" Style="{StaticResource EstiloBotonesControlPelicula}">Examinar</Button>
-                    
+                    <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}">Cargar en JSON</Button>
+                    <Button Grid.Row="1" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}">Guardar en JSON</Button>
+                    <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}">Añadir Película</Button>
+                    <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}">Editar Película</Button>
+                    <Button Grid.Row="5" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}">Eliminar Película</Button>
+                    <Button Grid.Row="8" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}">Examinar</Button>
+
 
                 </Grid>
             </TabItem>

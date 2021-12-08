@@ -20,9 +20,17 @@ namespace JuegoPeliculas
     /// </summary>
     public partial class MainWindow : Window
     {
+        private PeliculasVM peliculasVM;
         public MainWindow()
         {
+            peliculasVM = new PeliculasVM();
+            this.DataContext = peliculasVM;
             InitializeComponent();
+        }
+
+        private void VerPistaCheckbox_Click(object sender, RoutedEventArgs e)
+        {
+            PistaTextBlock.Visibility = Visibility.Visible;
         }
     }
 }
