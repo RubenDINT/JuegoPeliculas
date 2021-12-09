@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JuegoPeliculas"
+        xmlns:convertidores="clr-namespace:JuegoPeliculas.convertidores"
         mc:Ignorable="d"
-        Title="Juego Películas" Height="450" Width="800" MinWidth="600" MinHeight="450">
+        Title="Juego Películas" Height="480" Width="800" MinWidth="600" MinHeight="450">
+    
     <Window.Resources>
+        <convertidores:DificultadToBackgroundConverter x:Key="DificultadToBackgroundConverter"></convertidores:DificultadToBackgroundConverter>
         <!-- Estilo para aplicar fuente -->
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Comic Sans MS"></Setter>
@@ -25,15 +28,16 @@
         <Style TargetType="{x:Type TextBox}" x:Key="EstiloCamposTexto">
             <Setter Property="Height" Value="18" />
         </Style>
+        
     </Window.Resources>
 
 
 
     <Grid>
-        <TabControl>
+        <TabControl >
             <!-- Pestaña para jugar -->
             <TabItem Header="Jugar">
-                <Grid>
+                <Grid Background="{Binding Path=PeliculaActual.Nivel, Converter={StaticResource DificultadToBackgroundConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
@@ -66,7 +70,6 @@
                                 <TextBlock>0</TextBlock>
                             </Viewbox>
                         </DockPanel>
-
                     </Grid>
 
                     <!-- Contenedor con el validador de películas -->
@@ -111,6 +114,7 @@
                     <!-- Contenedor de imágenes de películas -->
                     <ListBox ItemsSource="{Binding Path=ListaPeliculas}" 
                              SelectedItem="{Binding Path=PeliculaActual}"
+                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
                              Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="4" Margin="0,0,219,0">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>

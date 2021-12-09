@@ -48,42 +48,5 @@ class Pelicula : ObservableObject
         Nivel = nivel;
         Genero = genero;
     }
-
-    public static ObservableCollection<Pelicula> GetSamples()
-    {
-        ObservableCollection<Pelicula> lista = new ObservableCollection<Pelicula>();
-
-        string peliculasJson = File.ReadAllText("peliculas.json");
-
-        lista = JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
-
-        return lista;
-    }
-
-    public static ObservableCollection<string> GetDificultades()
-    {
-        ObservableCollection<string> lista = new ObservableCollection<string>();
-
-        lista.Add("Fácil");
-        lista.Add("Media");
-        lista.Add("Difícil");
-
-        return lista;
-
-    }
-
-    public static ObservableCollection<string> GetGeneros()
-    {
-        ObservableCollection<string> lista = new ObservableCollection<string>();
-
-        lista.Add("Ciencia-Ficción");
-        lista.Add("Terror");
-        lista.Add("Comedia");
-        lista.Add("Drama");
-        lista.Add("Acción");
-
-        return lista;
-
-    }
 }
 
