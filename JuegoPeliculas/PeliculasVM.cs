@@ -44,14 +44,8 @@ namespace JuegoPeliculas
             set { SetProperty(ref generos, value); }
         }
 
-        public static ObservableCollection<Pelicula> GetSamples()
-        {
-            string peliculasJson = File.ReadAllText("peliculas.json");
-
-            ObservableCollection<Pelicula> lista = JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
-
-            return lista;
-        }
+        public static ObservableCollection<Pelicula> GetSamples() => JsonService.ImportarJson(DialogService.ArchivoSeleccionado);
+        
 
         public static ObservableCollection<string> GetDificultades()
         {
