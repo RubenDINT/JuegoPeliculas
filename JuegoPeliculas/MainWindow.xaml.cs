@@ -34,7 +34,7 @@ namespace JuegoPeliculas
 
         private void SeleccionarJsonButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogService.OpenFileDialogService();
+            DialogService.OpenFileDialogService("json");
             // Movido del constructor de MainWindow
             peliculasVM = new PeliculasVM();
             this.DataContext = peliculasVM;
@@ -58,6 +58,14 @@ namespace JuegoPeliculas
             {
                 DialogService.MessageBoxService("Tienes que rellenar todos los campos para añadir una película", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void ElegirImagenButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogService.OpenFileDialogService("imagen");
+            // AzureImageService nos devuelve una URL de azure de la imagen seleccionada
+            String urlImagen = AzureService.AzureImageService(DialogService.ArchivoSeleccionado);
+            ImagenTextBox.Text = urlImagen;
         }
     }
 }

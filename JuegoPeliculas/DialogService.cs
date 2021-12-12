@@ -15,10 +15,14 @@ namespace JuegoPeliculas
 
         public static string ArchivoSeleccionado { get => archivoSeleccionado; set => archivoSeleccionado = value; }
 
-        public static void OpenFileDialogService()
+        public static void OpenFileDialogService(string tipoArchivo)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "JSON File (*.json)|*.json";
+            // Dependiendo del tipo de archivo pasado por parámetros, se permitirá seleccionar un tipo de archivos u otro
+            if(tipoArchivo == "json") openFileDialog.Filter = "JSON File (*.json)|*.json";
+            if (tipoArchivo == "imagen") openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;";
+
+
             bool? resultado = openFileDialog.ShowDialog();
 
             if (resultado == true)

@@ -68,6 +68,7 @@
                         <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0">Nueva Partida</Button>
                         <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2">Finalizar Partida</Button>
                         <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
+
                             <TextBlock DockPanel.Dock="Top">Puntuación</TextBlock>
                             <Viewbox>
                                 <TextBlock>0</TextBlock>
@@ -157,7 +158,7 @@
                     <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="AñadirPeliculaButton" Click="AñadirPeliculaButton_Click">Añadir Película</Button>
                     <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EditarPeliculaButton">Editar Película</Button>
                     <Button Grid.Row="5" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EliminarPeliculaButton">Eliminar Película</Button>
-                    <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="ExaminarButton">Examinar</Button>
+                    <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="ElegirImagenButton" Click="ElegirImagenButton_Click">Elegir Imagen</Button>
 
 
                 </Grid>
