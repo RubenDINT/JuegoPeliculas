@@ -48,5 +48,9 @@ class Pelicula : ObservableObject
         Nivel = nivel;
         Genero = genero;
     }
+    public Pelicula()
+    {
+
+    }
 }
 

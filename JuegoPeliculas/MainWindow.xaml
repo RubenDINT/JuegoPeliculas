@@ -138,19 +138,19 @@
 
                     <!-- Campos de texto para escribir título, pista, imagen de la película -->
                     <TextBlock Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" Style="{StaticResource EstiloTitulosGestion}"> Título de la película</TextBlock>
-                    <TextBox Grid.Column="2" Grid.Row="7" Style="{StaticResource EstiloCamposTexto}" x:Name="TituloTextBox"/>
+                    <TextBox Grid.Column="2" Grid.Row="7" Style="{StaticResource EstiloCamposTexto}" x:Name="TituloTextBox" Text="{Binding Path=PeliculaNueva.Titulo}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="3" Style="{StaticResource EstiloTitulosGestion}"> Pista de la película</TextBlock>
-                    <TextBox Grid.Column="2" Grid.Row="8" Style="{StaticResource EstiloCamposTexto}" x:Name="PistaTextBox"/>
+                    <TextBox Grid.Column="2" Grid.Row="8" Style="{StaticResource EstiloCamposTexto}" x:Name="PistaTextBox" Text="{Binding Path=PeliculaNueva.Pista}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="3" Style="{StaticResource EstiloTitulosGestion}"> Imagen de la película</TextBlock>
-                    <TextBox Grid.Column="2" Grid.Row="9" Style="{StaticResource EstiloCamposTexto}" x:Name="ImagenTextBox"/>
+                    <TextBox Grid.Column="2" Grid.Row="9" Style="{StaticResource EstiloCamposTexto}" x:Name="ImagenTextBox" Text="{Binding Path=PeliculaNueva.Cartel}"/>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="4" Margin="20,0,0,15">
                         <TextBlock>Nivel de dificultad:</TextBlock>
-                        <ComboBox ItemsSource="{Binding Path=NivelesDificultad}" x:Name="DificultadComboBox"/>
+                        <ComboBox ItemsSource="{Binding Path=NivelesDificultad}" Text="{Binding Path=PeliculaNueva.Nivel}" x:Name="DificultadComboBox"/>
                         <TextBlock Margin="40,0,0,0">Género:</TextBlock>
-                        <ComboBox ItemsSource="{Binding Path=Generos}" x:Name="GenerosComboBox"/>
+                        <ComboBox ItemsSource="{Binding Path=Generos}" Text="{Binding Path=PeliculaNueva.Genero}" x:Name="GenerosComboBox"/>
                     </StackPanel>
                     <!-- Botones de control de las películas -->
                     <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="SeleccionarJsonButton" Click="SeleccionarJsonButton_Click" >Seleccionar JSON</Button>

@@ -36,6 +36,15 @@ namespace JuegoPeliculas
             set { SetProperty(ref nivelesDificultad, value); }
         }
 
+        private Pelicula peliculaNueva;
+
+        public Pelicula PeliculaNueva
+        {
+            get { return peliculaNueva; }
+            set { SetProperty(ref peliculaNueva, value); }
+        }
+
+
         private ObservableCollection<string> generos;
 
         public ObservableCollection<string> Generos
@@ -44,8 +53,25 @@ namespace JuegoPeliculas
             set { SetProperty(ref generos, value); }
         }
 
+        private Pelicula pelicula;
+
+        public Pelicula Pelicula
+        {
+            get { return pelicula; }
+            set { SetProperty(ref pelicula, value); }
+        }
+
+
         public static ObservableCollection<Pelicula> GetSamples() => JsonService.ImportarJson(DialogService.ArchivoSeleccionado);
         
+        public void CargarJson()
+        {
+            DialogService.OpenFileDialogService("json");
+            ListaPeliculas = GetSamples();
+            PeliculaActual = listaPeliculas.FirstOrDefault();
+            Generos = GetGeneros();
+            NivelesDificultad = GetDificultades();
+        }
 
         public static ObservableCollection<string> GetDificultades()
         {
@@ -71,12 +97,14 @@ namespace JuegoPeliculas
             return lista;
         }
 
+        public void AñadirPelicula()
+        {
+            ListaPeliculas.Add(PeliculaNueva);
+        }
+
         public PeliculasVM()
         {
-            listaPeliculas = GetSamples();
-            PeliculaActual = listaPeliculas.FirstOrDefault();
-            generos = GetGeneros();
-            nivelesDificultad = GetDificultades();
+            PeliculaNueva = new Pelicula();
         }
 
     }

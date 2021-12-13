@@ -12,7 +12,7 @@ namespace JuegoPeliculas
     {
         public static string AzureImageService(string rutaImagen)
         {
-            string cadenaConexion = "https://recursosjuegopeliculas.blob.core.windows.net/assets";
+            string cadenaConexion = "DefaultEndpointsProtocol=https;AccountName=recursosjuegopeliculas;AccountKey=SGmjMa0VmOIL5rQ1MbrAoulxchT8QWxyrhfpxJy2sfgI3V/NrVH+X1hBdJRsIykiCvcISJyE4YGOQlvMz1WAow==;EndpointSuffix=core.windows.net";
             string nombreContenedorBlobs = "assets";
 
             //Obtenemos el cliente del contenedor

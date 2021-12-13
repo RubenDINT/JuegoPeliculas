@@ -25,6 +25,8 @@ namespace JuegoPeliculas
         public MainWindow()
         {
             InitializeComponent();
+            peliculasVM = new PeliculasVM();
+            this.DataContext = peliculasVM;
         }
 
         private void VerPistaCheckbox_Click(object sender, RoutedEventArgs e)
@@ -34,10 +36,7 @@ namespace JuegoPeliculas
 
         private void SeleccionarJsonButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogService.OpenFileDialogService("json");
-            // Movido del constructor de MainWindow
-            peliculasVM = new PeliculasVM();
-            this.DataContext = peliculasVM;
+            peliculasVM.CargarJson();
         }
 
         private void GuardarJsonButton_Click(object sender, RoutedEventArgs e)
@@ -47,14 +46,11 @@ namespace JuegoPeliculas
 
         private void AñadirPeliculaButton_Click(object sender, RoutedEventArgs e)
         {
-            // Se haría aquí??
             try
             {
-                peliculasVM.ListaPeliculas.Add(new Pelicula(TituloTextBox.Text, PistaTextBox.Text, ImagenTextBox.Text,
-                                                            DificultadComboBox.SelectedItem.ToString(), 
-                                                            GenerosComboBox.SelectedItem.ToString()));
+                peliculasVM.AñadirPelicula();
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 DialogService.MessageBoxService("Tienes que rellenar todos los campos para añadir una película", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
