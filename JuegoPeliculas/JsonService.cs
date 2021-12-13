@@ -11,18 +11,17 @@ namespace JuegoPeliculas
 {
     class JsonService
     {
-        public static void ExportarAJson(ObservableCollection<Pelicula> lista)
+        // Método al que le pasas una lista y te devuelve un string formato JSON
+        public static string ExportarAJson(ObservableCollection<Pelicula> lista)
         {
-            string peliculasJson = JsonConvert.SerializeObject(lista);
-            File.WriteAllText("peliculas.json", peliculasJson);
+            return JsonConvert.SerializeObject(lista);         
         }
 
+        // Método al que le pasas el path de un archivo y te devuelve una lista 
         public static ObservableCollection<Pelicula> ImportarJson(string archivo)
         {
             string peliculasJson = File.ReadAllText(archivo);
-            ObservableCollection<Pelicula> lista = JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
-
-            return lista;
+            return JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
         }
     }
 }

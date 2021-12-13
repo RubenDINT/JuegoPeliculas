@@ -39,23 +39,25 @@ namespace JuegoPeliculas
             peliculasVM.CargarJson();
         }
 
+        // Método para guardar en un archivo JSON todas las películas cargadas
         private void GuardarJsonButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogService.SaveFileDialogService();
+        { 
+            DialogService.SaveFileDialogService(JsonService.ExportarAJson(peliculasVM.ListaPeliculas));
         }
 
+        // Método para añadir una película mediante el formulario a la lista de películas 
         private void AñadirPeliculaButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                peliculasVM.AñadirPelicula();
-            }
-            catch (NullReferenceException)
-            {
-                DialogService.MessageBoxService("Tienes que rellenar todos los campos para añadir una película", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            peliculasVM.AñadirPelicula();
         }
 
+        // Método que nos permite eliminar una película de la lista de películas
+        private void EliminarPeliculaButton_Click(object sender, RoutedEventArgs e)
+        {
+            peliculasVM.EliminarPelicula();
+        }
+
+        // Método que nos permite elegir una imagen de nuestro ordenador y establecerla como cartel de la nueva película
         private void ElegirImagenButton_Click(object sender, RoutedEventArgs e)
         {
             DialogService.OpenFileDialogService("imagen");

@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>assets\peliculasIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Azure.Core, Version=1.19.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Azure.Core.1.19.0\lib\net461\Azure.Core.dll</HintPath>
@@ -118,7 +121,9 @@
     </Compile>
     <Compile Include="AzureService.cs" />
     <Compile Include="convertidores\DificultadToBackgroundConverter.cs" />
+    <Compile Include="convertidores\GeneroToImageConverter.cs" />
     <Compile Include="DialogService.cs" />
+    <Compile Include="ExcepcionesService.cs" />
     <Compile Include="JsonService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -146,7 +151,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="assets\peliculas.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -156,7 +160,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="assets\placeholder.jpg" />
+    <Resource Include="assets\peliculasIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\action.png" />
+    <Resource Include="assets\comedy.png" />
+    <Resource Include="assets\drama.png" />
+    <Resource Include="assets\science.png" />
+    <Resource Include="assets\terror.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\default.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

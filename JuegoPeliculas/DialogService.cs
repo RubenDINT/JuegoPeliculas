@@ -32,7 +32,7 @@ namespace JuegoPeliculas
             }
         }
 
-        public static void SaveFileDialogService()
+        public static void SaveFileDialogService(string textoAEscribir)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON File (*.json)|*.json";
@@ -42,7 +42,7 @@ namespace JuegoPeliculas
             {
                 try
                 {
-                    File.WriteAllText(saveFileDialog.FileName, File.ReadAllText(archivoSeleccionado));
+                    File.WriteAllText(saveFileDialog.FileName, textoAEscribir);
                     MessageBoxService($"Archivo {saveFileDialog.SafeFileName} guardado");
                 }
                 catch (ArgumentNullException)
