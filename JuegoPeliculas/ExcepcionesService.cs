@@ -12,8 +12,7 @@ namespace JuegoPeliculas
     {
         public ListaPeliculasNullException()
         {
-            DialogService.MessageBoxService("No existe una Lista de Peliculas a la que añadir una película, prueba a cargar un archivo JSON",
-                                                "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ;   
         }
     }
 
@@ -21,8 +20,16 @@ namespace JuegoPeliculas
     {
         public PeliculaNuevaCampoVacioNuloException()
         {
-            DialogService.MessageBoxService("Completa todos los campos para crear una nueva película",
-                                                "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ;
         }
+    }
+
+    class CantidadPeliculasException : Exception
+    {
+        public CantidadPeliculasException()
+        {
+            ;
+        }
+
     }
 }

@@ -53,7 +53,7 @@
                     </Grid.RowDefinitions>
                     
                     <!-- Imagen de la película (último hijo)-->
-                    <Image Source="{Binding Path=PeliculaActual.Cartel}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Margin="10"></Image>
+                    <Image Source="{Binding Path=PeliculaActual.Cartel}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="10"></Image>
 
                     <!-- Contenedor con la puntuación y los botones de nueva partida y rendirse -->
                     <Grid Grid.Column="1">
@@ -66,13 +66,13 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0">Nueva Partida</Button>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2">Finalizar Partida</Button>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0" x:Name="NuevaPartidaButton" IsEnabled="False" Click="NuevaPartidaButton_Click">Nueva Partida</Button>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2" x:Name="FinalizarPartidaButton" IsEnabled="False">Finalizar Partida</Button>
                         <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
 
                             <TextBlock DockPanel.Dock="Top">Puntuación</TextBlock>
                             <Viewbox>
-                                <TextBlock>0</TextBlock>
+                                <TextBlock Text="{Binding Path=PuntuacionTotalPartida}">0</TextBlock>
                             </Viewbox>
                         </DockPanel>
                     </Grid>
@@ -80,13 +80,14 @@
                     <!-- Contenedor con el validador de películas -->
                     <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="False" Width="250" HorizontalAlignment="Left">
                         <TextBlock DockPanel.Dock="Top" Margin="0,15,0,-40">Introduce el título de la película:</TextBlock>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" DockPanel.Dock="Right">Validar</Button>
-                        <TextBox Width="150" Height="30" DockPanel.Dock="Left" HorizontalAlignment="Center"/>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" DockPanel.Dock="Right" x:Name="ValidarButton" 
+                                Click="ValidarButton_Click" IsEnabled="False" IsDefault="True" >Validar</Button>
+                        <TextBox Width="150" Height="30" DockPanel.Dock="Left" HorizontalAlignment="Center" IsEnabled="False" x:Name="EntradaUsuarioTextBox"/>
                     </DockPanel>
 
                     <!-- Contenedor con la pista y el género -->
                     <DockPanel Grid.Column="1" Grid.Row="2">
-                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top" Click="VerPistaCheckbox_Click"/>
+                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top" Click="VerPistaCheckbox_Click" IsEnabled="False" Checked="VerPistaCheckbox_Checked"/>
                         <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top" Text="{Binding Path=PeliculaActual.Pista}" Visibility="Hidden" /> 
                         <Image Source="{Binding Path=PeliculaActual.Genero, Converter={StaticResource GeneroToImageConverter}}" Name="GeneroImagen"></Image>
                     </DockPanel>

@@ -13,6 +13,7 @@ namespace JuegoPeliculas
 {
     class PeliculasVM : ObservableObject
     {
+        private Random seed = new Random();
         private Pelicula peliculaActual;
 
         public Pelicula PeliculaActual
@@ -65,11 +66,14 @@ namespace JuegoPeliculas
 
         public static ObservableCollection<Pelicula> GetSamples() => JsonService.ImportarJson(DialogService.ArchivoSeleccionado);
 
+        // Método que devuelve una película aleatoria entre la Lista de películas
+        public Pelicula ElegirPeliculaAleatoria() => ListaPeliculas.ElementAt(seed.Next(ListaPeliculas.Count));
+
         public void CargarJson()
         {
             DialogService.OpenFileDialogService("json");
             ListaPeliculas = GetSamples();
-            PeliculaActual = listaPeliculas.FirstOrDefault();
+            PeliculaActual = ElegirPeliculaAleatoria();
         }
 
         public static ObservableCollection<string> GetDificultades()
@@ -119,11 +123,13 @@ namespace JuegoPeliculas
             }
             catch (ListaPeliculasNullException)
             {
-
+                DialogService.MessageBoxService("No existe una Lista de Peliculas a la que añadir una película, prueba a cargar un archivo JSON",
+                                                "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (PeliculaNuevaCampoVacioNuloException)
             {
-
+                DialogService.MessageBoxService("Completa todos los campos para crear una nueva película",
+                                                "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -144,9 +150,18 @@ namespace JuegoPeliculas
             }
             catch (ListaPeliculasNullException)
             {
-
+                DialogService.MessageBoxService("No existe una Lista de Peliculas a la que añadir una película, prueba a cargar un archivo JSON",
+                                                "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+        public void ElegirImagen()
+        {
+            DialogService.OpenFileDialogService("imagen");
+            // AzureImageService nos devuelve una URL de azure de la imagen seleccionada
+            PeliculaNueva.Cartel = AzureService.AzureImageService(DialogService.ArchivoSeleccionado);
+        }
+
         public PeliculasVM()
         {
             PeliculaNueva = new Pelicula();

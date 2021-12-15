@@ -57,6 +57,10 @@ namespace JuegoPeliculas
             MessageBox.Show(mensaje, titulo, boxButton, messageBoxImage);
         }
 
+        public static MessageBoxResult MessageBoxServiceWithResult(string mensaje, string titulo, MessageBoxButton boxButton, MessageBoxImage messageBoxImage)
+            => MessageBox.Show(mensaje, titulo, boxButton, messageBoxImage);
+
+
         public static void MessageBoxService(string mensaje)
         {
             MessageBox.Show(mensaje);
