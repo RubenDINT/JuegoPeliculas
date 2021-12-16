@@ -10,7 +10,13 @@ namespace JuegoPeliculas
 {
     class Partida : ObservableObject
     {
-        private const int MINIMO_PELICULAS = 5;
+        private int turnos;
+
+        public int Turnos
+        {
+            get { return turnos; }
+            set { SetProperty(ref turnos, value); }
+        }
 
         private int puntuacionTotalPartida;
 
@@ -46,14 +52,13 @@ namespace JuegoPeliculas
 
         public void PeliculaAcertada()
         {
-            DialogService.MessageBoxService($"Has acertado, has ganado {PuntuacionPeliculaActual} puntos",
-                                               "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             PuntuacionTotalPartida += PuntuacionPeliculaActual;
-
+            turnos++;
         }
         public Partida()
         {
             PuntuacionTotalPartida = 0;
+            turnos = 0;
         }
     }
 }

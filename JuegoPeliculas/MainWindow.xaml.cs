@@ -79,5 +79,10 @@ namespace JuegoPeliculas
         {
             peliculasVM.VerPista();
         }
+
+        private void FinalizarPartidaButton_Click(object sender, RoutedEventArgs e)
+        {
+            peliculasVM.FinPartida();
+        }
     }
 }

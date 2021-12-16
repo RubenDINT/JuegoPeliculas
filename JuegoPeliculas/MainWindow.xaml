@@ -33,6 +33,15 @@
         <Style TargetType="TextBlock" x:Key="EstiloTitulosGestion">
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
+        <!--Trigger para aplicar visibilidad a la pista, en función de si el usuario elige revelarla o no -->
+        <Style TargetType="{x:Type TextBlock}" x:Key="EstiloPistaTextBlock">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=PistaRevelada}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
 
@@ -51,9 +60,9 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Imagen de la película (último hijo)-->
-                    <Image Source="{Binding Path=PeliculaActual.Cartel}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="10"></Image>
+                    <Image Source="{Binding Path=PeliculaActual.Cartel, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="10" />
 
                     <!-- Contenedor con la puntuación y los botones de nueva partida y rendirse -->
                     <Grid Grid.Column="1">
@@ -66,13 +75,16 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0" x:Name="NuevaPartidaButton" IsEnabled="{Binding Path=PeliculasDisponibles}" Click="NuevaPartidaButton_Click">Nueva Partida</Button>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2" x:Name="FinalizarPartidaButton" IsEnabled="{Binding Path=Partida.PartidaEmpezada}">Finalizar Partida</Button>
-                        <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
 
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0" x:Name="NuevaPartidaButton" 
+                                IsEnabled="{Binding Path=PeliculasDisponibles}" Click="NuevaPartidaButton_Click">Nueva Partida</Button>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2" x:Name="FinalizarPartidaButton" 
+                                IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Click="FinalizarPartidaButton_Click">Finalizar Partida</Button>
+
+                        <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
                             <TextBlock DockPanel.Dock="Top">Puntuación</TextBlock>
                             <Viewbox>
-                                <TextBlock Text="{Binding Path=PuntuacionTotalPartida}">0</TextBlock>
+                                <TextBlock Text="{Binding Path=Partida.PuntuacionTotalPartida}" />
                             </Viewbox>
                         </DockPanel>
                     </Grid>
@@ -87,37 +99,38 @@
 
                     <!-- Contenedor con la pista y el género -->
                     <DockPanel Grid.Column="1" Grid.Row="2">
-                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top" Click="VerPistaCheckbox_Click" IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Checked="VerPistaCheckbox_Checked"/>
-                        <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top" Text="{Binding Path=PeliculaActual.Pista}" Visibility="Hidden" />
-                        
-                        <!-- TODO: Hacer Trigger con visibility y binding a PistaRevelada -->
+                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top"
+                                  IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Checked="VerPistaCheckbox_Checked"/>
+                        <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top" 
+                                   Text="{Binding Path=PeliculaActual.Pista}" Style="{StaticResource EstiloPistaTextBlock}" />
                         <Image Source="{Binding Path=PeliculaActual.Genero, Converter={StaticResource GeneroToImageConverter}}" Name="GeneroImagen"></Image>
                     </DockPanel>
                 </Grid>
-
             </TabItem>
+            
             <!-- Pestaña para gestionar las películas -->
             <TabItem Header="Gestionar">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="13.4"></ColumnDefinition>
-                        <ColumnDefinition Width="117"/>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    
                     <!-- Contenedor de imágenes de películas -->
                     <ListBox ItemsSource="{Binding Path=ListaPeliculas}" 
                              SelectedItem="{Binding Path=PeliculaActual}"
@@ -141,22 +154,25 @@
                     </ListBox>
 
                     <!-- Campos de texto para escribir título, pista, imagen de la película -->
-                    <TextBlock Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" Style="{StaticResource EstiloTitulosGestion}"> Título de la película</TextBlock>
-                    <TextBox Grid.Column="2" Grid.Row="7" Style="{StaticResource EstiloCamposTexto}" x:Name="TituloTextBox" Text="{Binding Path=PeliculaNueva.Titulo}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="7" Style="{StaticResource EstiloTitulosGestion}"> Título de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Style="{StaticResource EstiloCamposTexto}"
+                             x:Name="TituloTextBox" Text="{Binding Path=PeliculaActual.Titulo}"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="3" Style="{StaticResource EstiloTitulosGestion}"> Pista de la película</TextBlock>
-                    <TextBox Grid.Column="2" Grid.Row="8" Style="{StaticResource EstiloCamposTexto}" x:Name="PistaTextBox" Text="{Binding Path=PeliculaNueva.Pista}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="8"  Style="{StaticResource EstiloTitulosGestion}"> Pista de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" Style="{StaticResource EstiloCamposTexto}"
+                             x:Name="PistaTextBox" Text="{Binding Path=PeliculaActual.Pista}"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="3" Style="{StaticResource EstiloTitulosGestion}"> Imagen de la película</TextBlock>
-                    <TextBox Grid.Column="2" Grid.Row="9" Style="{StaticResource EstiloCamposTexto}" x:Name="ImagenTextBox" Text="{Binding Path=PeliculaNueva.Cartel}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="9" Style="{StaticResource EstiloTitulosGestion}"> Imagen de la película</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2" Style="{StaticResource EstiloCamposTexto}" 
+                             x:Name="ImagenTextBox" Text="{Binding Path=PeliculaActual.Cartel}"/>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="4" Margin="20,0,0,15">
                         <TextBlock>Nivel de dificultad:</TextBlock>
-                        <ComboBox ItemsSource="{Binding Path=NivelesDificultad}" SelectedItem="{Binding Path=PeliculaNueva.Nivel}" 
-                                  Text="{Binding Path=NivelesDificultad}" x:Name="DificultadComboBox"/>
+                        <ComboBox ItemsSource="{Binding Path=NivelesDificultad}" SelectedItem="{Binding Path=PeliculaActual.Nivel}" 
+                                   x:Name="DificultadComboBox"/>
                         <TextBlock Margin="40,0,0,0">Género:</TextBlock>
-                        <ComboBox ItemsSource="{Binding Path=Generos}" SelectedItem="{Binding Path=PeliculaNueva.Genero}" 
-                                  Text="{Binding Path=Generos}" x:Name="GenerosComboBox"/>
+                        <ComboBox ItemsSource="{Binding Path=Generos}" SelectedItem="{Binding Path=PeliculaActual.Genero}" 
+                                   x:Name="GenerosComboBox"/>
                     </StackPanel>
                     <!-- Botones de control de las películas -->
                     <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="SeleccionarJsonButton" Click="SeleccionarJsonButton_Click" >Seleccionar JSON</Button>
@@ -165,7 +181,6 @@
                     <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EditarPeliculaButton">Editar Película</Button>
                     <Button Grid.Row="5" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EliminarPeliculaButton" Click="EliminarPeliculaButton_Click">Eliminar Película</Button>
                     <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="ElegirImagenButton" Click="ElegirImagenButton_Click">Elegir Imagen</Button>
-
 
                 </Grid>
             </TabItem>
