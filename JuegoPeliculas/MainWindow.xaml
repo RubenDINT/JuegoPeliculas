@@ -66,8 +66,8 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0" x:Name="NuevaPartidaButton" IsEnabled="False" Click="NuevaPartidaButton_Click">Nueva Partida</Button>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2" x:Name="FinalizarPartidaButton" IsEnabled="False">Finalizar Partida</Button>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0" x:Name="NuevaPartidaButton" IsEnabled="{Binding Path=PeliculasDisponibles}" Click="NuevaPartidaButton_Click">Nueva Partida</Button>
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2" x:Name="FinalizarPartidaButton" IsEnabled="{Binding Path=Partida.PartidaEmpezada}">Finalizar Partida</Button>
                         <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
 
                             <TextBlock DockPanel.Dock="Top">Puntuación</TextBlock>
@@ -81,14 +81,16 @@
                     <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="False" Width="250" HorizontalAlignment="Left">
                         <TextBlock DockPanel.Dock="Top" Margin="0,15,0,-40">Introduce el título de la película:</TextBlock>
                         <Button Style="{StaticResource EstiloBotonesControlPartida}" DockPanel.Dock="Right" x:Name="ValidarButton" 
-                                Click="ValidarButton_Click" IsEnabled="False" IsDefault="True" >Validar</Button>
-                        <TextBox Width="150" Height="30" DockPanel.Dock="Left" HorizontalAlignment="Center" IsEnabled="False" x:Name="EntradaUsuarioTextBox"/>
+                                Click="ValidarButton_Click" IsEnabled="{Binding Path=Partida.PartidaEmpezada}" IsDefault="True" >Validar</Button>
+                        <TextBox Width="150" Height="30" DockPanel.Dock="Left" HorizontalAlignment="Center" IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Text="{Binding Path=EntradaUsuario, UpdateSourceTrigger=PropertyChanged}" x:Name="EntradaUsuarioTextBox"/>
                     </DockPanel>
 
                     <!-- Contenedor con la pista y el género -->
                     <DockPanel Grid.Column="1" Grid.Row="2">
-                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top" Click="VerPistaCheckbox_Click" IsEnabled="False" Checked="VerPistaCheckbox_Checked"/>
-                        <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top" Text="{Binding Path=PeliculaActual.Pista}" Visibility="Hidden" /> 
+                        <CheckBox Content="Ver pista" Name="VerPistaCheckbox" DockPanel.Dock="Top" Click="VerPistaCheckbox_Click" IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Checked="VerPistaCheckbox_Checked"/>
+                        <TextBlock x:Name="PistaTextBlock" DockPanel.Dock="Top" Text="{Binding Path=PeliculaActual.Pista}" Visibility="Hidden" />
+                        
+                        <!-- TODO: Hacer Trigger con visibility y binding a PistaRevelada -->
                         <Image Source="{Binding Path=PeliculaActual.Genero, Converter={StaticResource GeneroToImageConverter}}" Name="GeneroImagen"></Image>
                     </DockPanel>
                 </Grid>

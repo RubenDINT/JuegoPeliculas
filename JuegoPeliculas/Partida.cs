@@ -36,6 +36,14 @@ namespace JuegoPeliculas
             set { SetProperty(ref puntuacionPeliculaActual, value); }
         }
 
+        private bool partidaEmpezada = false;
+
+        public bool PartidaEmpezada
+        {
+            get { return partidaEmpezada; }
+            set { SetProperty(ref partidaEmpezada, value); }
+        }
+
         public void PeliculaAcertada()
         {
             DialogService.MessageBoxService($"Has acertado, has ganado {PuntuacionPeliculaActual} puntos",
@@ -46,8 +54,6 @@ namespace JuegoPeliculas
         public Partida()
         {
             PuntuacionTotalPartida = 0;
-            DialogService.MessageBoxService("Nueva partida empezada",
-                                               "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

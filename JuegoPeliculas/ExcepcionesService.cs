@@ -12,7 +12,7 @@ namespace JuegoPeliculas
     {
         public ListaPeliculasNullException()
         {
-            ;   
+            
         }
     }
 
@@ -20,7 +20,7 @@ namespace JuegoPeliculas
     {
         public PeliculaNuevaCampoVacioNuloException()
         {
-            ;
+            
         }
     }
 
@@ -28,8 +28,17 @@ namespace JuegoPeliculas
     {
         public CantidadPeliculasException()
         {
-            ;
+            
         }
 
     }
+
+    class PeliculaActualNullException : Exception
+    {
+        public PeliculaActualNullException()
+        {
+
+        }
+    }
+
 }
