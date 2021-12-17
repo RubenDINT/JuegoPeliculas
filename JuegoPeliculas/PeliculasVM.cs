@@ -32,6 +32,14 @@ namespace JuegoPeliculas
             set { SetProperty(ref entradaUsuario, value); }
         }
 
+        private int puntos;
+
+        public int Puntos
+        {
+            get { return puntos; }
+            set { SetProperty(ref puntos, value); }
+        }
+
         private Boolean peliculasDisponibles = false;
 
         public Boolean PeliculasDisponibles
@@ -46,6 +54,14 @@ namespace JuegoPeliculas
         {
             get { return pistaRevelada; }
             set { SetProperty(ref pistaRevelada, value); }
+        }
+
+        private ObservableCollection<Pelicula> peliculasUsadas;
+
+        public ObservableCollection<Pelicula> PeliculasUsadas
+        {
+            get { return peliculasUsadas; }
+            set { SetProperty(ref peliculasUsadas, value); }
         }
 
         #endregion
@@ -74,15 +90,6 @@ namespace JuegoPeliculas
             get { return listaPeliculas; }
             set { SetProperty(ref listaPeliculas, value); }
         }
-
-        private ObservableCollection<Pelicula> peliculasUsadas = new ObservableCollection<Pelicula>();
-
-        public  ObservableCollection<Pelicula> PeliculasUsadas
-        {
-            get { return peliculasUsadas; }
-            set { SetProperty(ref peliculasUsadas, value); }
-        }
-
 
         private ObservableCollection<string> nivelesDificultad;
 
@@ -131,7 +138,22 @@ namespace JuegoPeliculas
         }
 
         #region Métodos Pelicula
-        public static ObservableCollection<Pelicula> GetSamples() => JsonService.ImportarJson(DialogService.ArchivoSeleccionado);
+        public static ObservableCollection<Pelicula> GetSamples()
+        {
+            ObservableCollection<Pelicula> lista = new ObservableCollection<Pelicula>();
+            try
+            {
+                lista = JsonService.ImportarJson(DialogService.ArchivoSeleccionado); 
+            }
+            catch (NullReferenceException)
+            {
+                DialogService.MessageBoxService("Error al cargar el JSON",
+                                               "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return lista;
+            
+        }
 
         // Método que devuelve una película aleatoria entre la Lista de películas
         public Pelicula ElegirPeliculaAleatoria() => ListaPeliculas.ElementAt(seed.Next(ListaPeliculas.Count));
@@ -170,12 +192,7 @@ namespace JuegoPeliculas
 
         public void LimpiarSeleccion()
         {
-            if (!string.IsNullOrEmpty(PeliculaActual.Titulo))
-            {
-                PeliculaActual = new Pelicula();
-                DialogService.MessageBoxService("Rellena los campos del formulario para añadir una película",
-                                               "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            PeliculaActual = new Pelicula();
         }
         // Método para añadir una película a la lista de películas
         public void AñadirPelicula()
@@ -191,7 +208,7 @@ namespace JuegoPeliculas
                 }
                 else
                 {
-                    ListaPeliculas.Add(PeliculaActual);
+                    ListaPeliculas.Add(new Pelicula(PeliculaActual));
                     PeliculasDisponibles = true;
                     DialogService.MessageBoxService($"Película {PeliculaNueva.Titulo} añadida",
                                                "Info", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -239,11 +256,11 @@ namespace JuegoPeliculas
             {
                 DialogService.OpenFileDialogService("imagen");
                 // AzureImageService nos devuelve una URL de azure de la imagen seleccionada
-                PeliculaNueva.Cartel = AzureService.AzureImageService(DialogService.ArchivoSeleccionado);
+                PeliculaActual.Cartel = AzureService.AzureImageService(DialogService.ArchivoSeleccionado);
             }
             catch (Exception)
             {
-                DialogService.MessageBoxService("Error con Azure","Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                DialogService.MessageBoxService("Error con Azure, probablemente ya hayas subido esa imagen","Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -264,9 +281,10 @@ namespace JuegoPeliculas
                 {
                     Partida.PartidaEmpezada = true;
                     SetPuntosPeliculaActual();
+                    PistaRevelada = false;
+                    PeliculasUsadas = new ObservableCollection<Pelicula>();
                     DialogService.MessageBoxService("Partida Empezada",
                                               "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 }
                 else throw new CantidadPeliculasException();
             }
@@ -277,18 +295,25 @@ namespace JuegoPeliculas
             }
         }
 
+        public void ActualizarPuntuaciones()
+        {
+            Partida.PuntuacionTotalPosible += Puntos;
+
+            if (PistaRevelada) Puntos /= 2;
+            Partida.PuntuacionTotalPartida += Puntos;
+            Partida.Turnos++;
+        }
         // Método que valida la entrada del usuario, y si este acierta, se encarga de asignar los puntos correspondientes
         public void ValidarEntradaUsuario()
         {
             if(EntradaUsuario.ToUpper() == PeliculaActual.Titulo.ToUpper())
             {
-                Partida.PeliculaAcertada();
-                DialogService.MessageBoxService($"Has acertado, has ganado {Partida.PuntuacionPeliculaActual} puntos",
-                                   "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                SetPuntosPeliculaActual();
-
+                ActualizarPuntuaciones();
+                DialogService.MessageBoxService("Enhorabuena! Has acertado",
+                                                "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 if (partida.Turnos == 5) FinPartida();
                 else SiguientePelicula();
+                SetPuntosPeliculaActual();
 
                 PistaRevelada = false;
             }
@@ -302,7 +327,7 @@ namespace JuegoPeliculas
         // Método que ocurre al finalizar la partida por turnos, o al pulsar el botón Finalizar Partida
         public void FinPartida()
         {
-            DialogService.MessageBoxService($"Fin de Partida! Has ganado un total de {partida.PuntuacionTotalPartida} puntos ",
+            DialogService.MessageBoxService($"Fin de Partida! Has ganado un total de {Partida.PuntuacionTotalPartida} puntos de los {Partida.PuntuacionTotalPosible} posibles",
                                    "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             Partida.PartidaEmpezada = false;
         }
@@ -319,7 +344,7 @@ namespace JuegoPeliculas
             do
             {
                 siguiente = ElegirPeliculaAleatoria();
-            } while (!ListaPeliculas.Contains(siguiente));
+            } while (PeliculasUsadas.Contains(siguiente));
 
             PeliculaActual = siguiente;
         }
@@ -327,23 +352,23 @@ namespace JuegoPeliculas
         // Método que dependiendo de la dificultad de la película en juego, nos devulve sus puntos
         public void SetPuntosPeliculaActual()
         {
-            int puntos = 0;
+            Puntos = 0;
             switch(PeliculaActual.Nivel)
             {
                 case "Fácil":
-                    puntos = 10;
+                    Puntos = 10;
                     break;
                 case "Media":
-                    puntos = 20;
+                    Puntos = 20;
                     break;
                 case "Difícil":
-                    puntos = 40;
+                    Puntos = 40;
                     break;
                 default:
                     break;
             }
 
-            Partida.PuntuacionPeliculaActual = puntos;
+            Partida.PuntuacionPeliculaActual = Puntos;
         }
 
         // Método que mostrará la pista dependiendo de la opción que elija el usuario en el MessageBox
@@ -357,7 +382,6 @@ namespace JuegoPeliculas
             if (mbr == MessageBoxResult.OK && !PistaRevelada)
             {
                 PistaRevelada = true;
-                Partida.PuntuacionPeliculaActual /= 2;
             }
             else if (mbr == MessageBoxResult.OK && PistaRevelada)
             {

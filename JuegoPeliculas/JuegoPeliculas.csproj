@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="AzureService.cs" />
     <Compile Include="convertidores\DificultadToBackgroundConverter.cs" />
+    <Compile Include="convertidores\DificultadToDesenfoqueConverter.cs" />
     <Compile Include="convertidores\GeneroToImageConverter.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="ExcepcionesService.cs" />

@@ -28,7 +28,7 @@ namespace JuegoPeliculas
             if (resultado == true)
             {
                 archivoSeleccionado = openFileDialog.FileName;
-                MessageBoxService($"Archivo {openFileDialog.SafeFileName} cargado");
+                MessageBoxService($"Archivo {openFileDialog.SafeFileName} cargado", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

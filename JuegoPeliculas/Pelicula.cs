@@ -48,9 +48,18 @@ class Pelicula : ObservableObject
         Nivel = nivel;
         Genero = genero;
     }
+
     public Pelicula()
     {
 
+    }
+    public Pelicula(Pelicula p)
+    {
+        Titulo = p.Titulo;
+        Pista = p.Pista;
+        Cartel = p.Cartel;
+        Nivel = p.Nivel;
+        Genero = p.Genero;
     }
 }
 

@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:JuegoPeliculas"
         xmlns:convertidores="clr-namespace:JuegoPeliculas.convertidores"
         mc:Ignorable="d"
-        Title="Juego Películas" Height="480" Width="800" MinWidth="600" MinHeight="450">
+        Title="Juego Películas" Height="480" Width="800" MinWidth="600" MinHeight="450" MaxHeight="500">
     
     <Window.Resources>
-        <convertidores:DificultadToBackgroundConverter x:Key="DificultadToBackgroundConverter"></convertidores:DificultadToBackgroundConverter>
-        <convertidores:GeneroToImageConverter x:Key="GeneroToImageConverter"></convertidores:GeneroToImageConverter>
+        <convertidores:DificultadToBackgroundConverter x:Key="DificultadToBackgroundConverter" />
+        <convertidores:GeneroToImageConverter x:Key="GeneroToImageConverter" />
+        <convertidores:DificultadToDesenfoqueConverter x:Key="DificultadToDesenfoqueConverter" />
         <!-- Estilo para aplicar fuente -->
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Comic Sans MS"></Setter>
@@ -42,6 +43,14 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="{x:Type Image}" x:Key="EstiloDesenfoque">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <BlurEffect Radius="{Binding Path=PeliculaActual.Nivel, Converter={StaticResource DificultadToDesenfoqueConverter}}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
 
@@ -62,7 +71,8 @@
                     </Grid.RowDefinitions>
 
                     <!-- Imagen de la película (último hijo)-->
-                    <Image Source="{Binding Path=PeliculaActual.Cartel, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="10" />
+                    <Image Source="{Binding Path=PeliculaActual.Cartel, UpdateSourceTrigger=PropertyChanged}" Stretch="Fill"
+                           Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="10" Style="{StaticResource EstiloDesenfoque}" />
 
                     <!-- Contenedor con la puntuación y los botones de nueva partida y rendirse -->
                     <Grid Grid.Column="1">
@@ -77,9 +87,9 @@
                         </Grid.RowDefinitions>
 
                         <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="0" x:Name="NuevaPartidaButton" 
-                                IsEnabled="{Binding Path=PeliculasDisponibles}" Click="NuevaPartidaButton_Click">Nueva Partida</Button>
+                                IsEnabled="{Binding Path=PeliculasDisponibles}" Click="NuevaPartidaButton_Click" Template="{DynamicResource MyButtonTemplate}">Nueva Partida</Button>
                         <Button Style="{StaticResource EstiloBotonesControlPartida}" Grid.Column="1" Grid.Row="2" x:Name="FinalizarPartidaButton" 
-                                IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Click="FinalizarPartidaButton_Click">Finalizar Partida</Button>
+                                IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Click="FinalizarPartidaButton_Click" Template="{DynamicResource MyButtonTemplate}">Finalizar Partida</Button>
 
                         <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
                             <TextBlock DockPanel.Dock="Top">Puntuación</TextBlock>
@@ -92,7 +102,7 @@
                     <!-- Contenedor con el validador de películas -->
                     <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="False" Width="250" HorizontalAlignment="Left">
                         <TextBlock DockPanel.Dock="Top" Margin="0,15,0,-40">Introduce el título de la película:</TextBlock>
-                        <Button Style="{StaticResource EstiloBotonesControlPartida}" DockPanel.Dock="Right" x:Name="ValidarButton" 
+                        <Button Style="{StaticResource EstiloBotonesControlPartida}" DockPanel.Dock="Right" x:Name="ValidarButton"  Template="{DynamicResource MyButtonTemplate}"
                                 Click="ValidarButton_Click" IsEnabled="{Binding Path=Partida.PartidaEmpezada}" IsDefault="True" >Validar</Button>
                         <TextBox Width="150" Height="30" DockPanel.Dock="Left" HorizontalAlignment="Center" IsEnabled="{Binding Path=Partida.PartidaEmpezada}" Text="{Binding Path=EntradaUsuario, UpdateSourceTrigger=PropertyChanged}" x:Name="EntradaUsuarioTextBox"/>
                     </DockPanel>
@@ -135,7 +145,7 @@
                     <ListBox ItemsSource="{Binding Path=ListaPeliculas}" 
                              SelectedItem="{Binding Path=PeliculaActual}"
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                             Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="3">
+                             Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="3" >
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel></WrapPanel>
@@ -156,7 +166,7 @@
                     <!-- Campos de texto para escribir título, pista, imagen de la película -->
                     <TextBlock Grid.Column="0" Grid.Row="7" Style="{StaticResource EstiloTitulosGestion}"> Título de la película</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Style="{StaticResource EstiloCamposTexto}"
-                             x:Name="TituloTextBox" Text="{Binding Path=PeliculaActual.Titulo, UpdateSourceTrigger=Explicit}"/>
+                             x:Name="TituloTextBox" Text="{Binding Path=PeliculaActual.Titulo}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="8"  Style="{StaticResource EstiloTitulosGestion}"> Pista de la película</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" Style="{StaticResource EstiloCamposTexto}"
@@ -175,13 +185,13 @@
                                    x:Name="GenerosComboBox"/>
                     </StackPanel>
                     <!-- Botones de control de las películas -->
-                    <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="SeleccionarJsonButton" Click="SeleccionarJsonButton_Click" >Seleccionar JSON</Button>
-                    <Button Grid.Row="1" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="GuardarJsonButton" Click="GuardarJsonButton_Click" >Guardar JSON</Button>
-                    <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="AñadirPeliculaButton" Click="AñadirPeliculaButton_Click">Añadir Película</Button>
-                    <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EditarPeliculaButton" Click="EditarPeliculaButton_Click">Editar Película</Button>
-                    <Button Grid.Row="5" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EliminarPeliculaButton" Click="EliminarPeliculaButton_Click">Eliminar Película</Button>
-                    <Button Grid.Row="7" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="LimpiarSeleccionButton" Click="LimpiarSeleccionButton_Click">Limpiar Seleccion</Button>
-                    <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="ElegirImagenButton" Click="ElegirImagenButton_Click">Elegir Imagen</Button>
+                    <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="SeleccionarJsonButton" Click="SeleccionarJsonButton_Click" Template="{DynamicResource MyButtonTemplate}" >Seleccionar JSON</Button>
+                    <Button Grid.Row="1" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="GuardarJsonButton" Click="GuardarJsonButton_Click" Template="{DynamicResource MyButtonTemplate}" >Guardar JSON</Button>
+                    <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="AñadirPeliculaButton" Click="AñadirPeliculaButton_Click" Template="{DynamicResource MyButtonTemplate}">Añadir Película</Button>
+                    <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EditarPeliculaButton" Click="EditarPeliculaButton_Click" Template="{DynamicResource MyButtonTemplate}">Editar Película</Button>
+                    <Button Grid.Row="5" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EliminarPeliculaButton" Click="EliminarPeliculaButton_Click" Template="{DynamicResource MyButtonTemplate}">Eliminar Película</Button>
+                    <Button Grid.Row="7" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="LimpiarSeleccionButton" Click="LimpiarSeleccionButton_Click" Template="{DynamicResource MyButtonTemplate}">Limpiar Seleccion</Button>
+                    <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="ElegirImagenButton" Click="ElegirImagenButton_Click" Template="{DynamicResource MyButtonTemplate}">Elegir Imagen</Button>
 
                 </Grid>
             </TabItem>

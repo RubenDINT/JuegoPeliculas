@@ -20,8 +20,19 @@ namespace JuegoPeliculas
         // Método al que le pasas el path de un archivo y te devuelve una lista 
         public static ObservableCollection<Pelicula> ImportarJson(string archivo)
         {
-            string peliculasJson = File.ReadAllText(archivo);
-            return JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
+            ObservableCollection<Pelicula> lista = new ObservableCollection<Pelicula>();
+            // Para controlar si cierras el dialogo sin cargar un JSon
+            try
+            {
+                string peliculasJson = File.ReadAllText(archivo);
+                lista = JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
+            }
+            catch (Exception)
+            {
+
+                
+            }
+            return lista;
         }
     }
 }

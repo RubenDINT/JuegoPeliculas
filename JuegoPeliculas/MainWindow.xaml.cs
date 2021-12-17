@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ComboBox = System.Windows.Controls.ComboBox;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace JuegoPeliculas
@@ -21,7 +22,6 @@ namespace JuegoPeliculas
     public partial class MainWindow : Window
     {
         private PeliculasVM peliculasVM;
-        private Partida partida;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,7 +36,16 @@ namespace JuegoPeliculas
 
         private void SeleccionarJsonButton_Click(object sender, RoutedEventArgs e)
         {
-            peliculasVM.CargarJson();
+            // Trycatch para controlar si se cierra el dialogo de Json sin cargar ningun Json
+            try
+            {
+                peliculasVM.CargarJson();
+            }
+            catch (Exception)
+            {
+
+            }
+            
         }
 
         // Método para guardar en un archivo JSON todas las películas cargadas
@@ -93,11 +102,17 @@ namespace JuegoPeliculas
 
         private void EditarPeliculaButton_Click(object sender, RoutedEventArgs e)
         {
+            // Para que no se edite la película hasta pulsar el botón Editar Película
             BindingExpression beTitulo = TituloTextBox.GetBindingExpression(TextBox.TextProperty);
             BindingExpression bePista = PistaTextBox.GetBindingExpression(TextBox.TextProperty);
             BindingExpression beCartel = ImagenTextBox.GetBindingExpression(TextBox.TextProperty);
-            BindingExpression beNivel = DificultadComboBox.GetBindingExpression(ComboBox.SelectedItem.TextProperty);
-            be.UpdateSource();
+            BindingExpression beNivel = DificultadComboBox.GetBindingExpression(ComboBox.SelectedItemProperty);
+            BindingExpression beGenero = GenerosComboBox.GetBindingExpression(ComboBox.SelectedItemProperty);
+            beTitulo.UpdateSource();
+            bePista.UpdateSource();
+            beCartel.UpdateSource();
+            beNivel.UpdateSource();
+            beGenero.UpdateSource();
         }
     }
 }

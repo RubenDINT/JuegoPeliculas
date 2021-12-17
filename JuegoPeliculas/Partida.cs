@@ -42,6 +42,15 @@ namespace JuegoPeliculas
             set { SetProperty(ref puntuacionPeliculaActual, value); }
         }
 
+        private int puntuacionTotalPosible;
+
+        public int PuntuacionTotalPosible
+        {
+            get { return puntuacionTotalPosible; }
+            set { SetProperty(ref puntuacionTotalPosible, value); }
+        }
+
+
         private bool partidaEmpezada = false;
 
         public bool PartidaEmpezada
@@ -49,15 +58,10 @@ namespace JuegoPeliculas
             get { return partidaEmpezada; }
             set { SetProperty(ref partidaEmpezada, value); }
         }
-
-        public void PeliculaAcertada()
-        {
-            PuntuacionTotalPartida += PuntuacionPeliculaActual;
-            turnos++;
-        }
         public Partida()
         {
             PuntuacionTotalPartida = 0;
+            PuntuacionTotalPosible = 0;
             turnos = 0;
         }
     }
