@@ -168,21 +168,30 @@ namespace JuegoPeliculas
             return lista;
         }
 
+        public void LimpiarSeleccion()
+        {
+            if (!string.IsNullOrEmpty(PeliculaActual.Titulo))
+            {
+                PeliculaActual = new Pelicula();
+                DialogService.MessageBoxService("Rellena los campos del formulario para añadir una película",
+                                               "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
         // Método para añadir una película a la lista de películas
         public void AñadirPelicula()
         {
             try
             {
                 // Comprobamos si alguno de los campos para crear una película está vacío
-                if (string.IsNullOrEmpty(PeliculaNueva.Titulo) || string.IsNullOrEmpty(PeliculaNueva.Pista) ||
-                         string.IsNullOrEmpty(PeliculaNueva.Cartel) || string.IsNullOrEmpty(PeliculaNueva.Genero) ||
-                         string.IsNullOrEmpty(PeliculaNueva.Nivel))
+                if (string.IsNullOrEmpty(PeliculaActual.Titulo) || string.IsNullOrEmpty(PeliculaActual.Pista) ||
+                         string.IsNullOrEmpty(PeliculaActual.Cartel) || string.IsNullOrEmpty(PeliculaActual.Genero) ||
+                         string.IsNullOrEmpty(PeliculaActual.Nivel))
                 {
                     throw new PeliculaNuevaCampoVacioNuloException();
                 }
                 else
                 {
-                    ListaPeliculas.Add(PeliculaNueva);
+                    ListaPeliculas.Add(PeliculaActual);
                     PeliculasDisponibles = true;
                     DialogService.MessageBoxService($"Película {PeliculaNueva.Titulo} añadida",
                                                "Info", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -274,9 +283,9 @@ namespace JuegoPeliculas
             if(EntradaUsuario.ToUpper() == PeliculaActual.Titulo.ToUpper())
             {
                 Partida.PeliculaAcertada();
-                SetPuntosPeliculaActual();
-                DialogService.MessageBoxService($"Has acertado, has ganado {partida.PuntuacionPeliculaActual} puntos",
+                DialogService.MessageBoxService($"Has acertado, has ganado {Partida.PuntuacionPeliculaActual} puntos",
                                    "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                SetPuntosPeliculaActual();
 
                 if (partida.Turnos == 5) FinPartida();
                 else SiguientePelicula();
@@ -345,12 +354,12 @@ namespace JuegoPeliculas
                                                "Info", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
 
-            if (mbr == MessageBoxResult.OK & !PistaRevelada)
+            if (mbr == MessageBoxResult.OK && !PistaRevelada)
             {
                 PistaRevelada = true;
                 Partida.PuntuacionPeliculaActual /= 2;
             }
-            else if (mbr == MessageBoxResult.OK & PistaRevelada)
+            else if (mbr == MessageBoxResult.OK && PistaRevelada)
             {
                 DialogService.MessageBoxServiceWithResult("Ya has revelado la pista de esta película",
                                                           "Error", MessageBoxButton.OK, MessageBoxImage.Error);

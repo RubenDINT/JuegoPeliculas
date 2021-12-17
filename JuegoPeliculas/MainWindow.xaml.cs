@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace JuegoPeliculas
 {
@@ -83,6 +84,20 @@ namespace JuegoPeliculas
         private void FinalizarPartidaButton_Click(object sender, RoutedEventArgs e)
         {
             peliculasVM.FinPartida();
+        }
+
+        private void LimpiarSeleccionButton_Click(object sender, RoutedEventArgs e)
+        {
+            peliculasVM.LimpiarSeleccion();
+        }
+
+        private void EditarPeliculaButton_Click(object sender, RoutedEventArgs e)
+        {
+            BindingExpression beTitulo = TituloTextBox.GetBindingExpression(TextBox.TextProperty);
+            BindingExpression bePista = PistaTextBox.GetBindingExpression(TextBox.TextProperty);
+            BindingExpression beCartel = ImagenTextBox.GetBindingExpression(TextBox.TextProperty);
+            BindingExpression beNivel = DificultadComboBox.GetBindingExpression(ComboBox.SelectedItem.TextProperty);
+            be.UpdateSource();
         }
     }
 }

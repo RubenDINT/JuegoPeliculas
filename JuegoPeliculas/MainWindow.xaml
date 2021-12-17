@@ -156,7 +156,7 @@
                     <!-- Campos de texto para escribir título, pista, imagen de la película -->
                     <TextBlock Grid.Column="0" Grid.Row="7" Style="{StaticResource EstiloTitulosGestion}"> Título de la película</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Style="{StaticResource EstiloCamposTexto}"
-                             x:Name="TituloTextBox" Text="{Binding Path=PeliculaActual.Titulo}"/>
+                             x:Name="TituloTextBox" Text="{Binding Path=PeliculaActual.Titulo, UpdateSourceTrigger=Explicit}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="8"  Style="{StaticResource EstiloTitulosGestion}"> Pista de la película</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" Style="{StaticResource EstiloCamposTexto}"
@@ -178,8 +178,9 @@
                     <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="SeleccionarJsonButton" Click="SeleccionarJsonButton_Click" >Seleccionar JSON</Button>
                     <Button Grid.Row="1" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="GuardarJsonButton" Click="GuardarJsonButton_Click" >Guardar JSON</Button>
                     <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="AñadirPeliculaButton" Click="AñadirPeliculaButton_Click">Añadir Película</Button>
-                    <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EditarPeliculaButton">Editar Película</Button>
+                    <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EditarPeliculaButton" Click="EditarPeliculaButton_Click">Editar Película</Button>
                     <Button Grid.Row="5" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="EliminarPeliculaButton" Click="EliminarPeliculaButton_Click">Eliminar Película</Button>
+                    <Button Grid.Row="7" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="LimpiarSeleccionButton" Click="LimpiarSeleccionButton_Click">Limpiar Seleccion</Button>
                     <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource EstiloBotonesControlPelicula}" x:Name="ElegirImagenButton" Click="ElegirImagenButton_Click">Elegir Imagen</Button>
 
                 </Grid>
